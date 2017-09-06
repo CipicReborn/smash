@@ -1,2 +1,5 @@
 Smash/Library/
 Smash/Temp/
+Smash/Smash.sln
+Smash/Smash.csproj
+*.meta
