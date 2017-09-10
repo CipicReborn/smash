@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
     #region PUBLIC METHODS
-    
+
+    public void UpdateScore (int p1Score, int p2Score) {
+        m_scoreLabel.text = p1Score.ToString("D2") + " - " + p2Score.ToString("D2");
+    }
+
     public void SelectSoloGameType () {
         m_gameManager.GameType = GameTypes.Solo;
     }
@@ -57,6 +62,7 @@ public class UIManager : MonoBehaviour {
     #region PRIVATE MEMBERS
 
     GameManager m_gameManager;
+    Text m_scoreLabel;
 
     #endregion
 
@@ -65,6 +71,7 @@ public class UIManager : MonoBehaviour {
 
     void Awake () {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        m_scoreLabel = GameObject.Find("Score").GetComponent<Text>();
     }
     
 
