@@ -9,6 +9,7 @@ public interface IController {
     Players GetPlayer();
     float GetPosition ();
     bool GetSmash ();
+    int GetSmashCharge();
     
 	
 }
