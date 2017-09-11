@@ -4,19 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 public class TouchManager : MonoBehaviour {
 
+    public bool HasTouch (Players player) {
+        if (player == Players.P1) {
+            return player1TouchFound;
+        }
+        else {
+            return player2TouchFound;
+        }
+    }
 
     public Vector2 GetTouchPosition (Players player) {
         if (player == Players.P1) {
-            if (player1TouchFound) {
-                return player1.position;
-            }
-            return new Vector2 (0, Screen.height / 2.0f);
+            return player1.position;
         }
         else {
-            if (player2TouchFound) {
-                return player2.position;
-            }
-            return new Vector2(Screen.width, Screen.height / 2.0f);
+            return player2.position;
         }
     }
 

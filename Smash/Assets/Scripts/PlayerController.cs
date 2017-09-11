@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour, IController {
     }
 
     void Update() {
-        m_position = Camera.main.ScreenToWorldPoint(m_touchManager.GetTouchPosition(m_player)).y;
+        if (m_touchManager.HasTouch(m_player)) {
+            m_position = Camera.main.ScreenToWorldPoint(m_touchManager.GetTouchPosition(m_player)).y;
+        }
     }
 }
