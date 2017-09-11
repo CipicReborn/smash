@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 public class TouchManager : MonoBehaviour {
 
+    public float TapMaxDurationInSeconds;
+    public float TapMaxIntervalInSeconds;
+
     public bool HasTouch (Players player) {
         if (player == Players.P1) {
             return player1TouchFound;
@@ -73,6 +76,8 @@ public class TouchManager : MonoBehaviour {
 	}
 
     const int m_MAX_TOUCHES = 4;
+
+
     //Color[] FeedbackColors = new Color[m_MAX_TOUCHES] { Color.cyan, Color.red, Color.yellow, Color.green };
 
     //void OnDrawGizmos() {
