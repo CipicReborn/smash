@@ -6,9 +6,11 @@ public class GameManager : MonoBehaviour {
 
     #region PUBLIC MEMBERS
 
-    public float initialBallSpeed;
-    public float speedIncrementPerStrike;
-
+    public float InitialBallSpeed;
+    public float MaxBallSpeed;
+    public float SpeedIncrementPerStrike;
+    public float SmashCost;
+    
     #endregion
 
 

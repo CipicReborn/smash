@@ -4,12 +4,16 @@ using UnityEngine;
 
 public interface IController {
 
-    void Init(Players player);
-    void InitPosition();
-    Players GetPlayer();
+    void Init (Players player);
+    void InitPosition ();
+    Players GetPlayer ();
     float GetPosition ();
-    bool GetSmash ();
+    void AddSmashCharge();
     int GetSmashCharge();
+    bool IsSmashAvailable ();
+    bool IsSmashTriggered ();
+    void ConsumeSmash();
+    
     
 	
 }

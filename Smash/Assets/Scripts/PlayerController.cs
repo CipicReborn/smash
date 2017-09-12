@@ -24,12 +24,32 @@ public class PlayerController : MonoBehaviour, IController {
         return m_position;
     }
 
-    public bool GetSmash () {
-        return m_smash;
+    public bool IsSmashAvailable () {
+        return m_isSmashAvailable;
+    }
+
+    public bool IsSmashTriggered() {
+        return m_isSmashAvailable;
     }
 
     public int GetSmashCharge () {
         return m_smashCharge;
+    }
+
+    public void AddSmashCharge() {
+        if (m_smashCharge < m_gameManager.SmashCost) {
+            m_smashCharge += 1;
+        }
+        if (m_smashCharge == m_gameManager.SmashCost) {
+            m_isSmashAvailable = true;
+            m_isSmashTriggered = true;
+        }
+    }
+
+    public void ConsumeSmash () {
+        m_smashCharge = 0;
+        m_isSmashAvailable = false;
+        m_isSmashTriggered = false;
     }
 
     public Players GetPlayer () {
@@ -37,12 +57,15 @@ public class PlayerController : MonoBehaviour, IController {
     }
 
     Players m_player;
+    GameManager m_gameManager;
     TouchManager m_touchManager;
     float m_position = 0;
-    bool m_smash = false;
+    bool m_isSmashAvailable = false;
+    bool m_isSmashTriggered = false;
     int m_smashCharge = 0;
 
     void Awake () {
+        m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         m_touchManager = GameObject.Find("TouchManager").GetComponent<TouchManager>();
     }
 

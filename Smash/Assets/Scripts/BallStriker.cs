@@ -47,22 +47,36 @@ public class BallStriker : MonoBehaviour {
     void StrikeBall () {
         Vector3 newVelocity = Vector3.zero;
 
-        DetermineDirection(m_ballTransform.position, out newVelocity);
-        DetermineSpeed(m_ballMover.GetVelocity(), ref newVelocity);
+        ApplyDirection(m_ballTransform.position, out newVelocity);
 
-        m_ballMover.SetVelocity(newVelocity);
+        if (m_controller.IsSmashTriggered()) {
+            ApplySmashVelocity(m_ballMover.GetVelocity(), ref newVelocity);
+            m_ballMover.SetSmashVelocity(newVelocity);
+            m_controller.ConsumeSmash();
+        }
+        else {
+            ApplyVelocity(m_ballMover.GetVelocity(), ref newVelocity);
+            m_ballMover.SetVelocity(newVelocity);
+            m_controller.AddSmashCharge();
+        }
     }
 
-    void DetermineDirection (Vector3 position, out Vector3 direction) {
+    void ApplyDirection (Vector3 position, out Vector3 direction) {
         float t = (transform.position.y + (transform.localScale.y / 2.0f) - position.y) / transform.localScale.y;
         t = Mathf.Clamp01(t);
         direction = Vector3.Slerp(m_toTop, m_toBottom, t).normalized;
     }
 
-    void DetermineSpeed (Vector3 velocityIn, ref Vector3 velocityOut) {
-        float speed = velocityIn.magnitude * (1 + m_gameManager.speedIncrementPerStrike);
-        speed = Mathf.Clamp(speed, 0f, 25.0f);
-        Debug.Log(speed);
+    void ApplyVelocity (Vector3 velocityIn, ref Vector3 velocityOut) {
+        float speed = 0;
+        speed = velocityIn.magnitude * (1 + m_gameManager.SpeedIncrementPerStrike);
+        speed = Mathf.Clamp(speed, 0f, m_gameManager.MaxBallSpeed);
+        //Debug.Log("Ball New Speed : " + speed.ToString());
         velocityOut *= speed;
     }
+
+    void ApplySmashVelocity(Vector3 velocityIn, ref Vector3 normalisedVelocityOut) {
+        normalisedVelocityOut *= m_gameManager.MaxBallSpeed;
+    }
+
 }

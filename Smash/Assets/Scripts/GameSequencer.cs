@@ -24,7 +24,7 @@ public class GameSequencer : MonoBehaviour {
         else {
             engagementDirection = Vector3.right;
         }
-        Engage(engagementDirection);
+        StartRound(engagementDirection);
     }
 
     public void StartRound() {
@@ -36,9 +36,14 @@ public class GameSequencer : MonoBehaviour {
         else {
             engagementDirection = Vector3.right;
         }
-        Engage(engagementDirection);
+        StartRound(engagementDirection);
     }
     
+    void StartRound (Vector3 direction) {
+
+        Engage(direction);
+    }
+
     public void EndRound (Players roundWinner, Players roundLoser) {
         m_gameManager.Add1PointToScore(roundWinner);
         StartRound(roundLoser);
@@ -62,6 +67,7 @@ public class GameSequencer : MonoBehaviour {
         m_ball.transform.position = m_initialBallPosition;
         m_leftPad.GetComponent<IController>().InitPosition();
         m_rightPad.GetComponent<IController>().InitPosition();
-        m_ball.GetComponent<BallMover>().SetVelocity(engagementDirection * m_gameManager.initialBallSpeed);
+        m_ball.GetComponent<BallMover>().SetVelocity(engagementDirection * m_gameManager.InitialBallSpeed);
+        //Debug.Log("Engagement Done By Game Sequencer");
     }
 }

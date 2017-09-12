@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class BallMover : MonoBehaviour {
 
-    public void SetVelocity(Vector3 velocity) {
+    public void SetVelocity (Vector3 velocity) {
         m_velocity = velocity;
+        m_useSmashVelocity = false;
+        //Debug.Log("Ball Velocity set to " + m_velocity.ToString());
+    }
+
+    public void SetSmashVelocity (Vector3 velocity) {
+        m_smashVelocity = velocity;
+        m_useSmashVelocity = true;
+        //Debug.Log("Ball Velocity set to " + m_velocity.ToString());
     }
 
     public Vector3 GetVelocity() {
@@ -14,13 +22,15 @@ public class BallMover : MonoBehaviour {
 
 
 
-    Vector3 m_velocity;
-    float upperBound;
-    float lowerBound;
+    Vector3 m_velocity = Vector3.zero;
+    Vector3 m_smashVelocity = Vector3.zero;
+    bool m_useSmashVelocity = false;
+    float m_upperBound = 0;
+    float m_lowerBound = 0;
 
-    void Start() {
-        upperBound = Camera.main.orthographicSize - transform.localScale.y / 2.0f;
-        lowerBound = -upperBound;
+    void Awake() {
+        m_upperBound = Camera.main.orthographicSize - transform.localScale.y / 2.0f;
+        m_lowerBound = -m_upperBound;
     }
 
     void Update () {
@@ -29,11 +39,17 @@ public class BallMover : MonoBehaviour {
     }
 
     void Move () {
-        transform.position += m_velocity * Time.deltaTime;
+        if (m_useSmashVelocity) {
+            transform.position += m_smashVelocity * Time.deltaTime;
+        }
+        else {
+            transform.position += m_velocity * Time.deltaTime;
+        }
+        //Debug.Log("Ball new position : " + transform.position.ToString());
     }
 
     void CollideBounds () {
-        if (transform.position.y > upperBound || transform.position.y < lowerBound) {
+        if (transform.position.y > m_upperBound || transform.position.y < m_lowerBound) {
             m_velocity.y *= -1;
         }
     }

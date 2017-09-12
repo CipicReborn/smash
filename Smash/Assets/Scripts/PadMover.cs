@@ -7,6 +7,8 @@ public class PadMover : MonoBehaviour {
 
     public void SetController (IController controller) {
         m_controller = controller;
+        //Debug.Log("Controller Set for " + transform.parent.name + " Pad Mover");
+        //Debug.Log(m_controller);
     }
 
     
