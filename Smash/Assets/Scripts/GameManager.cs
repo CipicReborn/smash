@@ -76,6 +76,18 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public float UpperBound {
+        get {
+            return m_upperBound;
+        }
+    }
+
+    public float LowerBound {
+        get {
+            return m_lowerBound;
+        }
+    }
+
     #endregion
 
 
@@ -117,6 +129,8 @@ public class GameManager : MonoBehaviour {
     int currentGameP1Score = 0;
     int currentGameP2Score = 0;
 
+    float m_upperBound = 0;
+    float m_lowerBound = 0;
 
     #endregion
 
@@ -126,11 +140,14 @@ public class GameManager : MonoBehaviour {
     void Awake() {
         m_uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         m_gameSequencer = GameObject.Find("GameSequencer").GetComponent<GameSequencer>();
+
+        m_upperBound = Camera.main.orthographicSize - transform.localScale.y / 2.0f;
+        m_lowerBound = -m_upperBound;
     }
 
     void Start() {
         GameObject.Find("LeftPad").AddComponent<PlayerController>().Init(Players.P1);
-        GameObject.Find("RightPad").AddComponent<PlayerController>().Init(Players.P2);
+        GameObject.Find("RightPad").AddComponent<IAController>().Init(Players.P2);
         m_gameSequencer.StartGame();
     }
 
