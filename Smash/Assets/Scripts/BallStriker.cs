@@ -67,12 +67,12 @@ public class BallStriker : MonoBehaviour {
         direction = Vector3.Slerp(m_toTop, m_toBottom, t).normalized;
     }
 
-    void ApplyVelocity (Vector3 velocityIn, ref Vector3 velocityOut) {
+    void ApplyVelocity (Vector3 velocityIn, ref Vector3 normalisedVelocityOut) {
         float speed = 0;
         speed = velocityIn.magnitude * (1 + m_gameManager.SpeedIncrementPerStrike);
         speed = Mathf.Clamp(speed, 0f, m_gameManager.MaxBallSpeed);
         //Debug.Log("Ball New Speed : " + speed.ToString());
-        velocityOut *= speed;
+        normalisedVelocityOut *= speed;
     }
 
     void ApplySmashVelocity(Vector3 velocityIn, ref Vector3 normalisedVelocityOut) {
