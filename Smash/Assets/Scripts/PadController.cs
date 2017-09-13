@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PadController : MonoBehaviour, IController {
 
-    public void Init (Players player) {
+    virtual public void Init (Players player) {
         m_player = player;
         GetComponent<PadMover>().SetController(this);
         GetComponent<BallStriker>().SetController(this);

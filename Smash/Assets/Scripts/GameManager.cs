@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        GameObject.Find("LeftPad").AddComponent<PlayerController>().Init(Players.P1);
+        GameObject.Find("LeftPad").AddComponent<IAController>().Init(Players.P1);
         GameObject.Find("RightPad").AddComponent<IAController>().Init(Players.P2);
         m_gameSequencer.StartGame();
     }
