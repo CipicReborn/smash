@@ -21,16 +21,13 @@ public class BallMover : MonoBehaviour {
     }
 
 
-
+    GameManager m_gameManager;
     Vector3 m_velocity = Vector3.zero;
     Vector3 m_smashVelocity = Vector3.zero;
     bool m_useSmashVelocity = false;
-    float m_upperBound = 0;
-    float m_lowerBound = 0;
 
     void Awake() {
-        m_upperBound = Camera.main.orthographicSize - transform.localScale.y / 2.0f;
-        m_lowerBound = -m_upperBound;
+        m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     void Update () {
@@ -49,8 +46,11 @@ public class BallMover : MonoBehaviour {
     }
 
     void CollideBounds () {
-        if (transform.position.y > m_upperBound || transform.position.y < m_lowerBound) {
-            m_velocity.y *= -1;
+        if (transform.position.y > m_gameManager.UpperBound) {
+            m_velocity.y = -Mathf.Abs(m_velocity.y);
+        }
+        else if (transform.position.y < m_gameManager.LowerBound) {
+            m_velocity.y = Mathf.Abs(m_velocity.y);
         }
     }
 
