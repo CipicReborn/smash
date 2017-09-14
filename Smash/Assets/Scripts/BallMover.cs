@@ -59,4 +59,9 @@ public class BallMover : MonoBehaviour {
             Debug.Log("Velocity at Goal : " + m_velocity.x.ToString());
         }
     }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, transform.position + m_velocity.normalized);
+    }
 }
