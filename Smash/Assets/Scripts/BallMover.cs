@@ -46,10 +46,10 @@ public class BallMover : MonoBehaviour {
     }
 
     void CollideBounds () {
-        if (transform.position.y > m_gameManager.UpperBound) {
+        if (transform.position.y > (m_gameManager.UpperBound - transform.localScale.y / 2.0f)) {
             m_velocity.y = -Mathf.Abs(m_velocity.y);
         }
-        else if (transform.position.y < m_gameManager.LowerBound) {
+        else if (transform.position.y < (m_gameManager.LowerBound + transform.localScale.y / 2.0f )) {
             m_velocity.y = Mathf.Abs(m_velocity.y);
         }
     }

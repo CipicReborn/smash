@@ -141,8 +141,9 @@ public class GameManager : MonoBehaviour {
         m_uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         m_gameSequencer = GameObject.Find("GameSequencer").GetComponent<GameSequencer>();
 
-        m_upperBound = Camera.main.orthographicSize - transform.localScale.y / 2.0f;
+        m_upperBound = Camera.main.orthographicSize;
         m_lowerBound = -m_upperBound;
+        Debug.Log("[GameManager] Upper Bound (" + m_upperBound.ToString() + "), Lower Bound (" + m_lowerBound.ToString() + ")");
     }
 
     void Start() {
