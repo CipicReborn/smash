@@ -57,9 +57,10 @@ public class PadController : MonoBehaviour, IController {
     protected int m_smashCharge = 0;
     protected bool m_isSmashAvailable = false;
     protected bool m_isSmashTriggered = false;
-    protected float m_halfPadSize = 0.5f;
+    protected float m_halfPadSize = 0;
 
     protected virtual void Awake() {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        m_halfPadSize = GetComponent<BoxCollider>().size.y / 2;
     }
 }
