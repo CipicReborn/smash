@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BallMover : MonoBehaviour {
 
     public void SetVelocity (Vector3 velocity) {
@@ -48,9 +49,11 @@ public class BallMover : MonoBehaviour {
     void CollideBounds () {
         if (transform.position.y > (m_gameManager.UpperBound - transform.localScale.y / 2.0f)) {
             m_velocity.y = -Mathf.Abs(m_velocity.y);
+            m_smashVelocity.y = -Mathf.Abs(m_smashVelocity.y);
         }
         else if (transform.position.y < (m_gameManager.LowerBound + transform.localScale.y / 2.0f )) {
             m_velocity.y = Mathf.Abs(m_velocity.y);
+            m_smashVelocity.y = Mathf.Abs(m_smashVelocity.y);
         }
     }
 
@@ -62,6 +65,11 @@ public class BallMover : MonoBehaviour {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(transform.position, transform.position + m_velocity.normalized);
+        if (m_useSmashVelocity) {
+            Gizmos.DrawLine(transform.position, transform.position + m_smashVelocity.normalized);
+        }
+        else {
+            Gizmos.DrawLine(transform.position, transform.position + m_velocity.normalized);
+        }
     }
 }
