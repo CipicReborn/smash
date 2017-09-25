@@ -53,6 +53,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void StartGame () {
+        SetStateGameScreen();
         m_gameManager.StartGame();
     }
 
@@ -63,7 +64,7 @@ public class UIManager : MonoBehaviour {
 
     GameManager m_gameManager;
     Text m_scoreLabel;
-
+    Button m_startGameButton;
     #endregion
 
 
@@ -72,8 +73,19 @@ public class UIManager : MonoBehaviour {
     void Awake () {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         m_scoreLabel = GameObject.Find("Score").GetComponent<Text>();
+        m_startGameButton = GameObject.Find("StartGame").GetComponent<Button>();
+        SetStateStartScreen();
     }
     
+    public void SetStateStartScreen () {
+        m_scoreLabel.gameObject.SetActive(false);
+        m_startGameButton.gameObject.SetActive(true);
+    }
+
+    void SetStateGameScreen() {
+        m_scoreLabel.gameObject.SetActive(true);
+        m_startGameButton.gameObject.SetActive(false);
+    }
 
     #endregion
 }
