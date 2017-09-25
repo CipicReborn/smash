@@ -57,11 +57,11 @@ public class BallMover : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("Goal")) {
-            Debug.Log("Velocity at Goal : " + m_velocity.x.ToString());
-        }
-    }
+    //private void OnTriggerEnter(Collider other) {
+    //    if (other.gameObject.CompareTag("Goal")) {
+    //        Debug.Log("Velocity at Goal : " + m_velocity.x.ToString());
+    //    }
+    //}
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.yellow;
