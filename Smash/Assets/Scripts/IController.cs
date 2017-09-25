@@ -4,9 +4,11 @@ using UnityEngine;
 
 public interface IController {
 
-    void Init (Players player);
-    void InitPosition ();
-    Players GetPlayer ();
+    void Init (PlayerIds player);
+    void Stop();
+
+    void InitPoint ();
+    PlayerIds GetPlayer ();
     float GetPosition ();
     void AddSmashCharge();
     int GetSmashCharge();

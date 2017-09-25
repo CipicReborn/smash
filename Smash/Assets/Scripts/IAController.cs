@@ -14,8 +14,8 @@ public class IAController : PadController {
 
     #region PUBLIC METHODS
 
-    override public void Init (Players player) {
-        base.Init(player); //reference the pad player
+    override public void Init (PlayerIds player) {
+        base.Init(player); //reference the pad owner
         DetermineOpponentDirection();
     }
 
@@ -54,10 +54,10 @@ public class IAController : PadController {
     }
 
     void DetermineOpponentDirection () {
-        if (m_player == Players.P1) {
+        if (m_playerId == PlayerIds.P1) {
             m_opponentDirection = Vector3.right;
         }
-        else if (m_player == Players.P2) {
+        else if (m_playerId == PlayerIds.P2) {
             m_opponentDirection = Vector3.left;
         }
     }

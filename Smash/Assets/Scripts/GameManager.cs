@@ -97,14 +97,13 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Game Start");
     }
 
-    public void Add1PointToScore (Players player) {
-        if (player == Players.P1) {
-            currentGameP1Score += 1;
-        }
-        else if (player == Players.P2) {
-            currentGameP2Score += 1;
-        }
+    public void Add1PointToScore (PlayerIds id) {
+        m_players[id].Score1Point();
         UpdateScoreDisplay();
+        if (m_players[id].CurrentScore == m_roundsLength) {
+            m_gameSequencer.EndRound();
+            m_uIManager.SetStateStartScreen();
+        }
     }
 
     public void InitScore () {
@@ -146,10 +145,6 @@ public class GameManager : MonoBehaviour {
         Debug.Log("[GameManager] Upper Bound (" + m_upperBound.ToString() + "), Lower Bound (" + m_lowerBound.ToString() + ")");
     }
 
-    void Start() {
-        GameObject.Find("LeftPad").AddComponent<IAController>().Init(Players.P1);
-        GameObject.Find("RightPad").AddComponent<IAController>().Init(Players.P2);
-        m_gameSequencer.StartGame();
     }
 
     void Update() {

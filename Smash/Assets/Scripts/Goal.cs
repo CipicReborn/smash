@@ -5,18 +5,18 @@ using UnityEngine;
 public class Goal : MonoBehaviour {
 
     GameSequencer m_gameSequencer;
-    Players m_scoringPlayer;
-    Players m_defendingPlayer;
+    PlayerIds m_scoringPlayer;
+    PlayerIds m_defendingPlayer;
 
 	void Start () {
         m_gameSequencer = GameObject.Find("GameSequencer").GetComponent<GameSequencer>();
         if (transform.position.x < 0) {
-            m_defendingPlayer = Players.P1;
-            m_scoringPlayer = Players.P2;
+            m_defendingPlayer = PlayerIds.P1;
+            m_scoringPlayer = PlayerIds.P2;
         }
         else {
-            m_defendingPlayer = Players.P2;
-            m_scoringPlayer = Players.P1;
+            m_defendingPlayer = PlayerIds.P2;
+            m_scoringPlayer = PlayerIds.P1;
         }
     }
 	
@@ -26,7 +26,7 @@ public class Goal : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Ball")) {
-            m_gameSequencer.EndRound(m_scoringPlayer, m_defendingPlayer);
+            m_gameSequencer.EndPoint(m_scoringPlayer, m_defendingPlayer);
         }
     }
 }

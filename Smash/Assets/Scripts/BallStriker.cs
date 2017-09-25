@@ -22,11 +22,11 @@ public class BallStriker : MonoBehaviour {
     }
 
     void UpdateStrikeVectors() {
-        if (m_controller.GetPlayer() == Players.P1) {
+        if (m_controller.GetPlayer() == PlayerIds.P1) {
             m_toTop.x = 1;
             m_toBottom.x = 1;
         }
-        else if (m_controller.GetPlayer() == Players.P2) {
+        else if (m_controller.GetPlayer() == PlayerIds.P2) {
             m_toTop.x = -1;
             m_toBottom.x = -1;
         }
