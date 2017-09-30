@@ -94,7 +94,6 @@ public class BallStriker : MonoBehaviour {
     }
 
     void PlayParticlesFX(Vector3 localPos) {
-        Debug.Log("Here Particles at " + localPos);
         m_particles.transform.localPosition = localPos;
         m_particles.Play();
     }

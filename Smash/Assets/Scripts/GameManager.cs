@@ -172,7 +172,7 @@ public class GameManager : MonoBehaviour {
         
         m_upperBound = Camera.main.orthographicSize;
         m_lowerBound = -m_upperBound;
-        Debug.Log("[GameManager] Upper Bound (" + m_upperBound.ToString() + "), Lower Bound (" + m_lowerBound.ToString() + ")");
+        //Debug.Log("[GameManager] Upper Bound (" + m_upperBound.ToString() + "), Lower Bound (" + m_lowerBound.ToString() + ")");
     }
 
     void DoStartGame () {

@@ -12,9 +12,7 @@ public class TouchAreaResizer : MonoBehaviour {
         float ScreenWidth = Screen.width / Screen.dpi * INCH_2_CM;
         float targetWidthPixels = targetWidthCm / INCH_2_CM * Screen.dpi;
         RectTransform rt = GetComponent<RectTransform>();
-        Debug.Log(rt.sizeDelta);
         rt.sizeDelta = new Vector2(targetWidthPixels, rt.sizeDelta.y);
-        Debug.Log(rt.sizeDelta);
     }
 	
 	// Update is called once per frame
