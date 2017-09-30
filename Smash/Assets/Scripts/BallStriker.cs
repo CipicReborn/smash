@@ -19,6 +19,7 @@ public class BallStriker : MonoBehaviour {
     Vector3 m_toBottom = new Vector3(1, -1, 0);
     AudioClip m_sfxHit;
     AudioClip m_sfxSmash;
+    ParticleSystem m_particles;
 
     void Awake() {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -28,6 +29,8 @@ public class BallStriker : MonoBehaviour {
         m_ballSfx = GameObject.Find("Ball").GetComponent<AudioSource>();
         m_sfxHit = Resources.Load("hitball") as AudioClip;
         m_sfxSmash = Resources.Load("smashball") as AudioClip;
+
+        m_particles = GetComponentInChildren<ParticleSystem>();
 
     }
 
@@ -47,6 +50,7 @@ public class BallStriker : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Ball")) {
             StrikeBall();
+            PlayParticlesFX(new Vector3(m_particles.transform.localPosition.x, other.gameObject.transform.position.y - transform.position.y, 0));
         }
     }
 
@@ -89,4 +93,9 @@ public class BallStriker : MonoBehaviour {
         normalisedVelocityOut *= m_gameManager.MaxBallSpeed;
     }
 
+    void PlayParticlesFX(Vector3 localPos) {
+        Debug.Log("Here Particles at " + localPos);
+        m_particles.transform.localPosition = localPos;
+        m_particles.Play();
+    }
 }
