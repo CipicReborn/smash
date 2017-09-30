@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameSequencer : MonoBehaviour {
 
     GameManager m_gameManager;
-    GameObject m_ball;
+    BallMover m_ball;
     GameObject m_leftPad;
     GameObject m_rightPad;
     bool m_isRoundInProgress = false;
@@ -21,7 +21,7 @@ public class GameSequencer : MonoBehaviour {
     public void EndRound() {
         m_isRoundInProgress = false;
         m_ball.transform.position = m_initialBallPosition;
-        m_ball.GetComponent<BallMover>().SetVelocity(Vector3.zero);
+        m_ball.SetVelocity(Vector3.zero);
     }
 
     public void StartNewPoint(PlayerIds engagingPlayer) {
@@ -62,11 +62,9 @@ public class GameSequencer : MonoBehaviour {
     
     void Awake() {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        m_ball = GameObject.Find("Ball");
+        m_ball = GameObject.Find("Ball").GetComponent<BallMover>();
         m_leftPad = GameObject.Find("LeftPad");
         m_rightPad = GameObject.Find("RightPad");
-        
-        m_initialBallPosition = m_ball.transform.position;
     }
 
     void Start() {
@@ -74,10 +72,10 @@ public class GameSequencer : MonoBehaviour {
     }
 
     void Engage (Vector3 engagementDirection) {
-        m_ball.transform.position = m_initialBallPosition;
+        m_ball.InitPosition();
         m_leftPad.GetComponent<IController>().InitPoint();
         m_rightPad.GetComponent<IController>().InitPoint();
-        m_ball.GetComponent<BallMover>().SetVelocity(engagementDirection * m_gameManager.InitialBallSpeed);
+        m_ball.SetVelocity(engagementDirection * m_gameManager.InitialBallSpeed);
         Debug.Log("Engagement Done By Game Sequencer");
     }
 }

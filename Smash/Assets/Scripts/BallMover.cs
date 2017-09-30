@@ -7,6 +7,11 @@ public class BallMover : MonoBehaviour {
 
     public ReboundParticlesController particles;
 
+    public void InitPosition() {
+        transform.position = m_initialPosition;
+        GetComponentInChildren<LineRendererController>().Reset();
+    }
+
     public void SetVelocity (Vector3 velocity) {
         m_velocity = velocity;
         m_useSmashVelocity = false;
@@ -25,6 +30,7 @@ public class BallMover : MonoBehaviour {
 
 
     GameManager m_gameManager;
+    Vector3 m_initialPosition;
     AudioSource m_sfxPlayer;
     AudioClip m_hitWall;
     Vector3 m_velocity = Vector3.zero;
@@ -35,6 +41,7 @@ public class BallMover : MonoBehaviour {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         m_sfxPlayer = GetComponent<AudioSource>();
         m_hitWall = Resources.Load("hitwall") as AudioClip;
+        m_initialPosition = transform.position;
     }
 
     void Update () {

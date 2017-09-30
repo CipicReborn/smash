@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class LineRendererController : MonoBehaviour {
 
+    public void Reset() {
+        positions = new Queue<Vector3>();
+    }
+
     int size = 20;
     LineRenderer line;
     Queue<Vector3> positions;
