@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class BallMover : MonoBehaviour {
 
+    public ReboundParticlesController particles;
+
     public void SetVelocity (Vector3 velocity) {
         m_velocity = velocity;
         m_useSmashVelocity = false;
@@ -50,10 +52,12 @@ public class BallMover : MonoBehaviour {
         if (transform.position.y > (m_gameManager.UpperBound - transform.localScale.y / 2.0f)) {
             m_velocity.y = -Mathf.Abs(m_velocity.y);
             m_smashVelocity.y = -Mathf.Abs(m_smashVelocity.y);
+            particles.BurstDown(new Vector3(transform.position.x, m_gameManager.UpperBound, transform.position.z));
         }
         else if (transform.position.y < (m_gameManager.LowerBound + transform.localScale.y / 2.0f )) {
             m_velocity.y = Mathf.Abs(m_velocity.y);
             m_smashVelocity.y = Mathf.Abs(m_smashVelocity.y);
+            particles.BurstUp(new Vector3(transform.position.x, m_gameManager.LowerBound, transform.position.z));
         }
     }
 
