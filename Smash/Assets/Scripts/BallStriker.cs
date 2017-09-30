@@ -14,11 +14,21 @@ public class BallStriker : MonoBehaviour {
     IController m_controller;
     Transform m_ballTransform;
     BallMover m_ballMover;
+    AudioSource m_ballSfx;
     Vector3 m_toTop = new Vector3(1, 1, 0);
     Vector3 m_toBottom = new Vector3(1, -1, 0);
+    AudioClip m_sfxHit;
+    AudioClip m_sfxSmash;
 
     void Awake() {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        
+        m_ballTransform = GameObject.Find("Ball").transform;
+        m_ballMover = GameObject.Find("Ball").GetComponent<BallMover>();
+        m_ballSfx = GameObject.Find("Ball").GetComponent<AudioSource>();
+        m_sfxHit = Resources.Load("hitball") as AudioClip;
+        m_sfxSmash = Resources.Load("smashball") as AudioClip;
+
     }
 
     void UpdateStrikeVectors() {
@@ -36,10 +46,6 @@ public class BallStriker : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Ball")) {
-            if (m_ballTransform == null) {
-                m_ballTransform = other.gameObject.transform;
-                m_ballMover = other.gameObject.GetComponent<BallMover>();
-            }
             StrikeBall();
         }
     }
@@ -53,12 +59,16 @@ public class BallStriker : MonoBehaviour {
             ApplySmashVelocity(m_ballMover.GetVelocity(), ref newVelocity);
             m_ballMover.SetSmashVelocity(newVelocity);
             m_controller.ConsumeSmash();
+            m_ballSfx.clip = m_sfxSmash;
         }
         else {
             ApplyVelocity(m_ballMover.GetVelocity(), ref newVelocity);
             m_ballMover.SetVelocity(newVelocity);
             m_controller.AddSmashCharge();
+            m_ballSfx.clip = m_sfxHit;
         }
+        m_ballSfx.pitch = 1 + Mathf.Round(Random.Range(-0.1f, 0.1f) * 100.0f)/100.0f;
+        m_ballSfx.Play();
     }
 
     void ApplyDirection (Vector3 position, out Vector3 direction) {

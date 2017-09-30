@@ -25,12 +25,16 @@ public class BallMover : MonoBehaviour {
 
 
     GameManager m_gameManager;
+    AudioSource m_sfxPlayer;
+    AudioClip m_hitWall;
     Vector3 m_velocity = Vector3.zero;
     Vector3 m_smashVelocity = Vector3.zero;
     bool m_useSmashVelocity = false;
 
     void Awake() {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        m_sfxPlayer = GetComponent<AudioSource>();
+        m_hitWall = Resources.Load("hitwall") as AudioClip;
     }
 
     void Update () {
@@ -53,12 +57,20 @@ public class BallMover : MonoBehaviour {
             m_velocity.y = -Mathf.Abs(m_velocity.y);
             m_smashVelocity.y = -Mathf.Abs(m_smashVelocity.y);
             particles.BurstDown(new Vector3(transform.position.x, m_gameManager.UpperBound, transform.position.z));
+            PlayHitSound();
         }
         else if (transform.position.y < (m_gameManager.LowerBound + transform.localScale.y / 2.0f )) {
             m_velocity.y = Mathf.Abs(m_velocity.y);
             m_smashVelocity.y = Mathf.Abs(m_smashVelocity.y);
             particles.BurstUp(new Vector3(transform.position.x, m_gameManager.LowerBound, transform.position.z));
+            PlayHitSound();
         }
+    }
+
+    void PlayHitSound () {
+        m_sfxPlayer.clip = m_hitWall;
+        m_sfxPlayer.pitch = 1 + Mathf.Round(Random.Range(-0.1f, 0.1f) * 100.0f) / 100.0f;
+        m_sfxPlayer.Play();
     }
 
     //private void OnTriggerEnter(Collider other) {
