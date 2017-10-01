@@ -66,14 +66,15 @@ public class BallStriker : MonoBehaviour {
             m_controller.ConsumeSmash();
             m_ballSfx.clip = m_sfxSmash;
             m_gfxAnimator.SetBool("isSmashing", true);
+            GetComponent<AudioSource>().Play();
         }
         else {
             ApplyVelocity(m_ballMover.GetVelocity(), ref newVelocity);
             m_ballMover.SetVelocity(newVelocity);
             m_controller.AddSmashCharge();
-            m_ballSfx.clip = m_sfxHit;
         }
-        m_ballSfx.pitch = 1 + Mathf.Round(Random.Range(-0.1f, 0.1f) * 100.0f)/100.0f;
+        m_ballSfx.clip = m_sfxHit;
+        m_ballSfx.pitch = 1 + Mathf.Round(Random.Range(-0.1f, 0.1f) * 100.0f) / 100.0f;
         m_ballSfx.Play();
     }
 

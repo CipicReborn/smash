@@ -1,22 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TouchAreaResizer : MonoBehaviour {
 
-    const float INCH_2_CM = 2.54f;
-    float targetWidthCm = 2.0f;
+    const float m_INCH_2_CM = 2.54f;
+    float m_targetWidthCm = 2.0f;
+    float m_targetWidthPixels;
+    CanvasScaler m_canvasScaler;
 
-	// Use this for initialization
-	void Start () {
-        float ScreenWidth = Screen.width / Screen.dpi * INCH_2_CM;
-        float targetWidthPixels = targetWidthCm / INCH_2_CM * Screen.dpi;
+    void Start () {
+        m_canvasScaler = GetComponentInParent<CanvasScaler>();
+        m_targetWidthPixels = m_targetWidthCm / m_INCH_2_CM * Screen.dpi * m_canvasScaler.referenceResolution.x / Screen.width;
         RectTransform rt = GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(targetWidthPixels, rt.sizeDelta.y);
+        rt.sizeDelta = new Vector2(m_targetWidthPixels, rt.sizeDelta.y);
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    //private void OnGUI() {
+    //    GUI.Label(new Rect(25, 25, 200, 30), "ScreenWidth:" + Screen.width);
+    //    GUI.Label(new Rect(25, 55, 200, 30), "TargetWidthPixels:" + m_targetWidthPixels);
+    //}
 }

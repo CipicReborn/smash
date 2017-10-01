@@ -176,10 +176,20 @@ public class GameManager : MonoBehaviour {
     }
 
     void DoStartGame () {
-        Debug.Log("[GameManager] Starting Game");
+        Debug.Log("[GameManager] Starting Game : " + m_gameType);
         m_players = new Dictionary<PlayerIds, Player>();
-        m_players[PlayerIds.P1] = new Player(PlayerIds.P1, PlayerTypes.CPU, "LeftPad");
-        m_players[PlayerIds.P2] = new Player(PlayerIds.P2, PlayerTypes.CPU, "RightPad");
+        if (m_gameType == GameTypes.Debug) {
+            m_players[PlayerIds.P1] = new Player(PlayerIds.P1, PlayerTypes.CPU, "LeftPad");
+        }
+        else {
+            m_players[PlayerIds.P1] = new Player(PlayerIds.P1, PlayerTypes.Human, "LeftPad");
+        }
+        if (m_gameType == GameTypes.Duo) {
+            m_players[PlayerIds.P2] = new Player(PlayerIds.P2, PlayerTypes.Human, "RightPad");
+        }
+        else {
+            m_players[PlayerIds.P2] = new Player(PlayerIds.P2, PlayerTypes.CPU, "RightPad");
+        }
         m_TouchManager.InitGame();
         m_gameSequencer.StartRound();
     }

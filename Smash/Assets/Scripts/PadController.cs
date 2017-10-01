@@ -6,7 +6,7 @@ public class PadController : MonoBehaviour, IController {
 
     virtual public void Init (PlayerIds playerId) {
 
-        Debug.Log("[PadController] Init Game");
+        //Debug.Log("[PadController] Init Game");
 
         SetComponentsEnabled(true);
 
@@ -24,7 +24,7 @@ public class PadController : MonoBehaviour, IController {
     }
 
     public void InitPoint () {
-        Debug.Log("[PadController] Init Point");
+        //Debug.Log("[PadController] Init Point");
         m_position = 0;
         m_isSmashTriggered = false;
     }

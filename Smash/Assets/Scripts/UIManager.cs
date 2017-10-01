@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
-    #region PUBLIC MEMBERS
+    #region PUBLIC SCREEN ANIMATORS
 
     public Animator StartScreen;
     public Animator ModeSelectionScreen;
@@ -15,12 +16,7 @@ public class UIManager : MonoBehaviour {
 
     #endregion
 
-
-    #region PUBLIC METHODS
-
-    public void UpdateScore (int p1Score, int p2Score) {
-        m_scoreLabel.text = p1Score.ToString("D2") + " - " + p2Score.ToString("D2");
-    }
+    #region PUBLIC BUTTON CALLBACKS
 
     public void SelectSoloGameType () {
         m_gameManager.GameType = GameTypes.Solo;
@@ -31,6 +27,7 @@ public class UIManager : MonoBehaviour {
         m_gameManager.GameType = GameTypes.Duo;
         OpenScreen(RoundsSelectionScreen);
     }
+
 
     public void SelectEasyAI () {
         m_gameManager.AI = AIs.Easy;
@@ -47,6 +44,7 @@ public class UIManager : MonoBehaviour {
         OpenScreen(RoundsSelectionScreen);
     }
 
+
     public void SelectSimpleMode () {
         m_gameManager.SoloMode = SoloModes.Simple;
         OpenScreen(DifficultySelectionScreen);
@@ -60,58 +58,69 @@ public class UIManager : MonoBehaviour {
         m_gameManager.SoloMode = SoloModes.Survival;
     }
 
-    public void SetGameSettings (int roundsCount, int roundsLength = 10) {
-        m_gameManager.RoundsCount = roundsCount;
-        m_gameManager.RoundsLength = roundsLength;
-    }
 
-    public void SetCareerName (string name) {
+    public void SetCareerName(string name) {
         m_gameManager.CareerName = name;
     }
 
-    public void StartGame (int roundsCount) {
+    public void StartGame(int roundsCount) {
         OpenScreen(GameScreen);
         SetGameSettings(roundsCount);
         m_gameManager.StartGame();
     }
 
+    #endregion
+
+    #region PUBLIC METHODS
+
     public void OpenStartScreen () {
         OpenScreen(StartScreen);
     }
 
-    public void OpenScreen(Animator screenAnimator) {
+    public void OpenScreen (Animator screenAnimator) {
         if (m_currentScreen == screenAnimator) {
             return;
         }
-
         screenAnimator.gameObject.SetActive(true);
-        //Save the currently selected button that was used to open this Screen. (CloseCurrent will modify it)
-        //var newPreviouslySelected = EventSystem.current.currentSelectedGameObject;
-        //Move the Screen to front.
         screenAnimator.transform.SetAsLastSibling();
-
         CloseCurrentScreen();
-
-        //m_PreviouslySelected = newPreviouslySelected;
-
         m_currentScreen = screenAnimator;
         m_currentScreen.SetBool(m_openScreenParameterId, true);
-
-        ////Set an element in the new screen as the new Selected one.
-        //GameObject go = FindFirstEnabledSelectable(anim.gameObject);
-        //SetSelected(go);
     }
 
-    public void CloseCurrentScreen() {
+    public void CloseCurrentScreen () {
         if (m_currentScreen == null) {
             return;
         }
         m_currentScreen.SetBool(m_openScreenParameterId, false);
-
-        //Reverting selection to the Selectable used before opening the current screen.
-        //SetSelected(m_PreviouslySelected);
         StartCoroutine(DisableScreenDelayed(m_currentScreen));
         m_currentScreen = null;
+    }
+
+    public IEnumerator StartEngagementCountdown (int value, Action callback = null) {
+
+        m_timerText.gameObject.SetActive(true);
+        m_timerText.GetComponent<Text>().text = value.ToString();
+        m_timerText.localScale = Vector3.one;
+
+        for (int i = 0; i < 51; i++) {
+            float scale = 1.0f - i / 50.0f;
+            m_timerText.localScale = new Vector3(scale, scale, scale);
+            yield return null;
+        }
+
+        if (value > 1) {
+            yield return StartCoroutine(StartEngagementCountdown(value - 1));
+        }
+
+        if (callback != null) {
+            m_timerText.gameObject.SetActive(false);
+            callback();
+        }
+    }
+
+    public void UpdateScore(int p1Score, int p2Score) {
+        m_scoreLabel.text = p1Score.ToString("D2") + " - " + p2Score.ToString("D2");
     }
 
     #endregion
@@ -121,6 +130,7 @@ public class UIManager : MonoBehaviour {
 
     GameManager m_gameManager;
     Text m_scoreLabel;
+    Transform m_timerText;
     Button m_startGameButton;
 
     Animator m_currentScreen;
@@ -136,20 +146,26 @@ public class UIManager : MonoBehaviour {
     void Awake () {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         m_scoreLabel = GameObject.Find("Score").GetComponent<Text>();
+        m_timerText = GameScreen.transform.Find("TimerText");
+        m_timerText.gameObject.SetActive(false);
         GameScreen.gameObject.SetActive(false);
 
         m_openScreenParameterId = Animator.StringToHash(m_OPEN_SCREEN_PARAMETER_NAME);
-
+        
     }
 
-    void Start() {
+    void SetGameSettings(int roundsCount, int roundsLength = 10) {
+        m_gameManager.RoundsCount = roundsCount;
+        m_gameManager.RoundsLength = roundsLength;
+    }
+
+    void Start () {
         if (StartScreen == null)
             return;
         OpenScreen(StartScreen);
     }
 
-
-    IEnumerator DisableScreenDelayed(Animator screenAnimator) {
+    IEnumerator DisableScreenDelayed (Animator screenAnimator) {
         bool closedStateReached = false;
         bool wantToClose = true;
         while (!closedStateReached && wantToClose) {
