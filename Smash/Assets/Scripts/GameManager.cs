@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour {
         UpdateScoreDisplay();
         if (m_players[id].CurrentScore == m_roundsLength) {
             m_gameSequencer.EndRound();
-            m_uIManager.SetStateStartScreen();
+            m_uIManager.OpenStartScreen();
         }
     }
 
@@ -178,8 +178,8 @@ public class GameManager : MonoBehaviour {
     void DoStartGame () {
         Debug.Log("[GameManager] Starting Game");
         m_players = new Dictionary<PlayerIds, Player>();
-        m_players[PlayerIds.P1] = new Player(PlayerIds.P1, PlayerTypes.Human, "LeftPad");
-        m_players[PlayerIds.P2] = new Player(PlayerIds.P2, PlayerTypes.Human, "RightPad");
+        m_players[PlayerIds.P1] = new Player(PlayerIds.P1, PlayerTypes.CPU, "LeftPad");
+        m_players[PlayerIds.P2] = new Player(PlayerIds.P2, PlayerTypes.CPU, "RightPad");
         m_TouchManager.InitGame();
         m_gameSequencer.StartRound();
     }

@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
+    #region PUBLIC MEMBERS
+
+    public Animator StartScreen;
+
+    #endregion
+
+
     #region PUBLIC METHODS
 
     public void UpdateScore (int p1Score, int p2Score) {
@@ -53,8 +60,47 @@ public class UIManager : MonoBehaviour {
     }
 
     public void StartGame () {
-        SetStateGameScreen();
+        CloseCurrentScreen();
         m_gameManager.StartGame();
+    }
+
+    public void OpenStartScreen () {
+        OpenScreen(StartScreen);
+    }
+
+    public void OpenScreen(Animator screenAnimator) {
+        if (m_currentScreen == screenAnimator) {
+            return;
+        }
+
+        screenAnimator.gameObject.SetActive(true);
+        //Save the currently selected button that was used to open this Screen. (CloseCurrent will modify it)
+        //var newPreviouslySelected = EventSystem.current.currentSelectedGameObject;
+        //Move the Screen to front.
+        screenAnimator.transform.SetAsLastSibling();
+
+        CloseCurrentScreen();
+
+        //m_PreviouslySelected = newPreviouslySelected;
+
+        m_currentScreen = screenAnimator;
+        m_currentScreen.SetBool(m_openScreenParameterId, true);
+
+        ////Set an element in the new screen as the new Selected one.
+        //GameObject go = FindFirstEnabledSelectable(anim.gameObject);
+        //SetSelected(go);
+    }
+
+    public void CloseCurrentScreen() {
+        if (m_currentScreen == null) {
+            return;
+        }
+        m_currentScreen.SetBool(m_openScreenParameterId, false);
+
+        //Reverting selection to the Selectable used before opening the current screen.
+        //SetSelected(m_PreviouslySelected);
+        StartCoroutine(DisableScreenDelayed(m_currentScreen));
+        m_currentScreen = null;
     }
 
     #endregion
@@ -65,6 +111,12 @@ public class UIManager : MonoBehaviour {
     GameManager m_gameManager;
     Text m_scoreLabel;
     Button m_startGameButton;
+
+    Animator m_currentScreen;
+    int m_openScreenParameterId;
+    const string m_OPEN_SCREEN_PARAMETER_NAME = "isOpen";
+    const string m_CLOSED_STATE_NAME = "Closed";
+
     #endregion
 
 
@@ -73,18 +125,32 @@ public class UIManager : MonoBehaviour {
     void Awake () {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         m_scoreLabel = GameObject.Find("Score").GetComponent<Text>();
-        m_startGameButton = GameObject.Find("StartGame").GetComponent<Button>();
-        SetStateStartScreen();
-    }
-    
-    public void SetStateStartScreen () {
-        m_scoreLabel.gameObject.SetActive(false);
-        m_startGameButton.gameObject.SetActive(true);
+
+        m_openScreenParameterId = Animator.StringToHash(m_OPEN_SCREEN_PARAMETER_NAME);
+
     }
 
-    void SetStateGameScreen() {
-        m_scoreLabel.gameObject.SetActive(true);
-        m_startGameButton.gameObject.SetActive(false);
+    void Start() {
+        if (StartScreen == null)
+            return;
+        OpenScreen(StartScreen);
+    }
+
+
+    IEnumerator DisableScreenDelayed(Animator screenAnimator) {
+        bool closedStateReached = false;
+        bool wantToClose = true;
+        while (!closedStateReached && wantToClose) {
+            if (!screenAnimator.IsInTransition(0))
+                closedStateReached = screenAnimator.GetCurrentAnimatorStateInfo(0).IsName(m_CLOSED_STATE_NAME);
+
+            wantToClose = !screenAnimator.GetBool(m_openScreenParameterId);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (wantToClose)
+            screenAnimator.gameObject.SetActive(false);
     }
 
     #endregion
