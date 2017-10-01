@@ -20,6 +20,7 @@ public class BallStriker : MonoBehaviour {
     AudioClip m_sfxHit;
     AudioClip m_sfxSmash;
     ParticleSystem m_particles;
+    Animator m_gfxAnimator;
 
     void Awake() {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -31,7 +32,7 @@ public class BallStriker : MonoBehaviour {
         m_sfxSmash = Resources.Load("smashball") as AudioClip;
 
         m_particles = GetComponentInChildren<ParticleSystem>();
-
+        m_gfxAnimator = GetComponentInChildren<Animator>();
     }
 
     void UpdateStrikeVectors() {
@@ -64,6 +65,7 @@ public class BallStriker : MonoBehaviour {
             m_ballMover.SetSmashVelocity(newVelocity);
             m_controller.ConsumeSmash();
             m_ballSfx.clip = m_sfxSmash;
+            m_gfxAnimator.SetBool("isSmashing", true);
         }
         else {
             ApplyVelocity(m_ballMover.GetVelocity(), ref newVelocity);
