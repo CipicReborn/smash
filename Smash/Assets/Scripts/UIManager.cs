@@ -8,6 +8,10 @@ public class UIManager : MonoBehaviour {
     #region PUBLIC MEMBERS
 
     public Animator StartScreen;
+    public Animator ModeSelectionScreen;
+    public Animator RoundsSelectionScreen;
+    public Animator DifficultySelectionScreen;
+    public Animator GameScreen;
 
     #endregion
 
@@ -20,26 +24,32 @@ public class UIManager : MonoBehaviour {
 
     public void SelectSoloGameType () {
         m_gameManager.GameType = GameTypes.Solo;
+        OpenScreen(ModeSelectionScreen);
     }
 
     public void SelectDuoGameType () {
         m_gameManager.GameType = GameTypes.Duo;
+        OpenScreen(RoundsSelectionScreen);
     }
 
     public void SelectEasyAI () {
         m_gameManager.AI = AIs.Easy;
+        OpenScreen(RoundsSelectionScreen);
     }
 
     public void SelectMediumAI () {
         m_gameManager.AI = AIs.Medium;
+        OpenScreen(RoundsSelectionScreen);
     }
 
     public void SelectHardAI () {
         m_gameManager.AI = AIs.Hard;
+        OpenScreen(RoundsSelectionScreen);
     }
 
     public void SelectSimpleMode () {
         m_gameManager.SoloMode = SoloModes.Simple;
+        OpenScreen(DifficultySelectionScreen);
     }
 
     public void SelectCareerMode () {
@@ -50,7 +60,7 @@ public class UIManager : MonoBehaviour {
         m_gameManager.SoloMode = SoloModes.Survival;
     }
 
-    public void SetGameSettings (int roundsCount, int roundsLength) {
+    public void SetGameSettings (int roundsCount, int roundsLength = 10) {
         m_gameManager.RoundsCount = roundsCount;
         m_gameManager.RoundsLength = roundsLength;
     }
@@ -59,8 +69,9 @@ public class UIManager : MonoBehaviour {
         m_gameManager.CareerName = name;
     }
 
-    public void StartGame () {
-        CloseCurrentScreen();
+    public void StartGame (int roundsCount) {
+        OpenScreen(GameScreen);
+        SetGameSettings(roundsCount);
         m_gameManager.StartGame();
     }
 
@@ -125,6 +136,7 @@ public class UIManager : MonoBehaviour {
     void Awake () {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         m_scoreLabel = GameObject.Find("Score").GetComponent<Text>();
+        GameScreen.gameObject.SetActive(false);
 
         m_openScreenParameterId = Animator.StringToHash(m_OPEN_SCREEN_PARAMETER_NAME);
 
