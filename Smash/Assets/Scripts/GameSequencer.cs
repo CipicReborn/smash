@@ -15,7 +15,7 @@ public class GameSequencer : MonoBehaviour {
 
     public void EndRound() {
         m_isRoundInProgress = false;
-        m_ball.InitPosition();
+        m_ball.Init();
         m_ball.SetVelocity(Vector3.zero);
     }
 
@@ -43,6 +43,7 @@ public class GameSequencer : MonoBehaviour {
     }
 
     public void EndPoint (PlayerIds pointWinner, PlayerIds pointLoser) {
+        m_ball.Disable();
         m_gameManager.Add1PointToScore(pointWinner);
         
         if (m_isRoundInProgress) {
@@ -88,7 +89,7 @@ public class GameSequencer : MonoBehaviour {
     }
 
     void Engage () {
-        m_ball.InitPosition();
+        m_ball.Init();
         m_leftPad.GetComponent<IController>().InitPoint();
         m_rightPad.GetComponent<IController>().InitPoint();
         m_ball.SetVelocity(m_engagmentDirection * m_gameManager.InitialBallSpeed);

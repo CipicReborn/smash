@@ -19,10 +19,6 @@ public class Goal : MonoBehaviour {
             m_scoringPlayer = PlayerIds.P1;
         }
     }
-	
-	void Update () {
-		
-	}
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Ball")) {
