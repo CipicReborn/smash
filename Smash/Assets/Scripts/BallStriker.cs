@@ -70,6 +70,7 @@ public class BallStriker : MonoBehaviour {
             m_gfxAnimator.SetBool("isSmashing", true);
             GetComponent<AudioSource>().Play();
             m_gameSequencer.SetSmashAction(true);
+            Camera.main.GetComponent<ScreenShake>().ShakeCameraForSeconds(0.1f, 0.2f);
         }
         else {
             ApplyVelocity(m_ballMover.GetVelocity(), ref newVelocity);

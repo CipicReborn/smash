@@ -126,6 +126,7 @@ public class UIManager : MonoBehaviour {
     public IEnumerator DisplayBoom () {
         m_boomFeedback.localScale = Vector3.zero;
         m_boomFeedback.gameObject.SetActive(true);
+        Camera.main.GetComponent<ScreenShake>().ShakeCameraForSeconds(0.5f, 0.4f);
         GetComponent<AudioSource>().Play();
         float tweenDuration = 5.0f;
         float displayDuration = 30.0f;
