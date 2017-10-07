@@ -8,11 +8,17 @@ public class BallMover : MonoBehaviour {
     public ReboundParticlesController particles;
 
     public void Init() {
+        gameObject.SetActive(true);
         transform.position = m_initialPosition;
         GetComponentInChildren<LineRendererController>().Reset();
         m_smashTrail.SetActive(false);
     }
 
+    public void Disable () {
+        m_velocity = Vector3.zero;
+        m_smashVelocity = Vector3.zero;
+        gameObject.SetActive(false);
+    }
     public void SetVelocity (Vector3 velocity) {
         m_velocity = velocity;
         m_useSmashVelocity = false;

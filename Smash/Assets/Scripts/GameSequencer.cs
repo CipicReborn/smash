@@ -16,6 +16,7 @@ public class GameSequencer : MonoBehaviour {
     public void EndRound() {
         m_isRoundInProgress = false;
         m_ball.Init();
+        m_ball.SetVelocity(Vector3.zero);
     }
 
     public void StartNewPoint() {
@@ -54,6 +55,7 @@ public class GameSequencer : MonoBehaviour {
             yield return null;
         }
         
+        m_ball.Disable();
         m_gameManager.Add1PointToScore(pointWinner);
         
         if (m_isRoundInProgress) {

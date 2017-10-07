@@ -28,6 +28,10 @@ public class UIManager : MonoBehaviour {
         OpenScreen(RoundsSelectionScreen);
     }
 
+    public void SelectDebugGameType() {
+        m_gameManager.GameType = GameTypes.Debug;
+        StartGame(1);
+    }
 
     public void SelectEasyAI () {
         m_gameManager.AI = AIs.Easy;
