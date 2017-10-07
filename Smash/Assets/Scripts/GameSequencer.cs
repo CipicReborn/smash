@@ -47,7 +47,7 @@ public class GameSequencer : MonoBehaviour {
     }
 
     public IEnumerator EndPoint (PlayerIds pointWinner, PlayerIds pointLoser) {
-        m_ball.SetVelocity(Vector3.zero);
+        m_ball.Disable();
         if (m_isSmashAction) {
             yield return StartCoroutine(m_uiManager.DisplayBoom());
         }
