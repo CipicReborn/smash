@@ -17,6 +17,7 @@ public class BallMover : MonoBehaviour {
     public void Disable () {
         m_velocity = Vector3.zero;
         m_smashVelocity = Vector3.zero;
+        m_smashTrail.SetActive(false);
         gameObject.SetActive(false);
     }
     public void SetVelocity (Vector3 velocity) {

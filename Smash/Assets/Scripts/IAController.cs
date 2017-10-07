@@ -6,7 +6,7 @@ public class IAController : PadController {
 
     #region PUBLIC MEMBERS
 
-    public float LerpSpeed = 0.5f; //Speed of the lerp to target position
+    public float LerpSpeed = 0.4f; //Speed of the lerp to target position
     public const float m_OFFSET_APPLICATION_DISTANCE_THRESHOLD = 2; //Distance to the ball at which the reception position starts to be applied
     public float m_maxOffset = 1; // maximum offset to pad center when striking ball
     
