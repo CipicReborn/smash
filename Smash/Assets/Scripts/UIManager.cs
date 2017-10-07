@@ -118,6 +118,23 @@ public class UIManager : MonoBehaviour {
             callback();
         }
     }
+    
+    public IEnumerator DisplayBoom () {
+        m_boomFeedback.localScale = Vector3.zero;
+        m_boomFeedback.gameObject.SetActive(true);
+        GetComponent<AudioSource>().Play();
+        float tweenDuration = 5.0f;
+        float displayDuration = 30.0f;
+        for (int i = 0; i < tweenDuration + 1; i++) {
+            float scale = 0.0f + i / tweenDuration;
+            m_boomFeedback.localScale = new Vector3(scale, scale, scale);
+            yield return null;
+        }
+        for (int i = 0; i < displayDuration + 1; i++) {
+            yield return null;
+        }
+        m_boomFeedback.gameObject.SetActive(false);
+    }
 
     public void UpdateScore(int p1Score, int p2Score) {
         m_scoreLabel.text = p1Score.ToString("D2") + " - " + p2Score.ToString("D2");
@@ -131,7 +148,7 @@ public class UIManager : MonoBehaviour {
     GameManager m_gameManager;
     Text m_scoreLabel;
     Transform m_timerText;
-    Button m_startGameButton;
+    Transform m_boomFeedback;
 
     Animator m_currentScreen;
     int m_openScreenParameterId;
@@ -148,6 +165,8 @@ public class UIManager : MonoBehaviour {
         m_scoreLabel = GameObject.Find("Score").GetComponent<Text>();
         m_timerText = GameScreen.transform.Find("TimerText");
         m_timerText.gameObject.SetActive(false);
+        m_boomFeedback = GameScreen.transform.Find("BoomContainer");
+        m_boomFeedback.gameObject.SetActive(false);
         GameScreen.gameObject.SetActive(false);
 
         m_openScreenParameterId = Animator.StringToHash(m_OPEN_SCREEN_PARAMETER_NAME);

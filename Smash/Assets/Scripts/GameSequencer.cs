@@ -15,8 +15,7 @@ public class GameSequencer : MonoBehaviour {
 
     public void EndRound() {
         m_isRoundInProgress = false;
-        m_ball.InitPosition();
-        m_ball.SetVelocity(Vector3.zero);
+        m_ball.Init();
     }
 
     public void StartNewPoint() {
@@ -42,7 +41,19 @@ public class GameSequencer : MonoBehaviour {
         StartNewPoint(engagementDirection);
     }
 
-    public void EndPoint (PlayerIds pointWinner, PlayerIds pointLoser) {
+    public void SetSmashAction (bool isSmashAction) {
+        m_isSmashAction = isSmashAction;
+    }
+
+    public IEnumerator EndPoint (PlayerIds pointWinner, PlayerIds pointLoser) {
+        m_ball.SetVelocity(Vector3.zero);
+        if (m_isSmashAction) {
+            yield return StartCoroutine(m_uiManager.DisplayBoom());
+        }
+        else {
+            yield return null;
+        }
+        
         m_gameManager.Add1PointToScore(pointWinner);
         
         if (m_isRoundInProgress) {
@@ -58,6 +69,7 @@ public class GameSequencer : MonoBehaviour {
     UIManager m_uiManager;
     bool m_isRoundInProgress = false;
     bool m_isFirstPointOfRound = false;
+    bool m_isSmashAction = false;
     BallMover m_ball;
     GameObject m_leftPad;
     GameObject m_rightPad;
@@ -88,15 +100,13 @@ public class GameSequencer : MonoBehaviour {
     }
 
     void Engage () {
-        m_ball.InitPosition();
+        m_isSmashAction = false;
+        m_ball.Init();
         m_leftPad.GetComponent<IController>().InitPoint();
         m_rightPad.GetComponent<IController>().InitPoint();
         m_ball.SetVelocity(m_engagmentDirection * m_gameManager.InitialBallSpeed);
         Debug.Log("Engagement Done By Game Sequencer");
     }
 
-    IEnumerator DisplayEngagementWarning () {
-        yield return null;
-    }
     #endregion
 }

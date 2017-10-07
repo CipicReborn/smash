@@ -11,6 +11,7 @@ public class BallStriker : MonoBehaviour {
 
 
     GameManager m_gameManager;
+    GameSequencer m_gameSequencer;
     IController m_controller;
     Transform m_ballTransform;
     BallMover m_ballMover;
@@ -24,6 +25,7 @@ public class BallStriker : MonoBehaviour {
 
     void Awake() {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        m_gameSequencer = GameObject.Find("GameSequencer").GetComponent<GameSequencer>();
         
         m_ballTransform = GameObject.Find("Ball").transform;
         m_ballMover = GameObject.Find("Ball").GetComponent<BallMover>();
@@ -67,11 +69,13 @@ public class BallStriker : MonoBehaviour {
             m_ballSfx.clip = m_sfxSmash;
             m_gfxAnimator.SetBool("isSmashing", true);
             GetComponent<AudioSource>().Play();
+            m_gameSequencer.SetSmashAction(true);
         }
         else {
             ApplyVelocity(m_ballMover.GetVelocity(), ref newVelocity);
             m_ballMover.SetVelocity(newVelocity);
             m_controller.AddSmashCharge();
+            m_gameSequencer.SetSmashAction(false);
         }
         m_ballSfx.clip = m_sfxHit;
         m_ballSfx.pitch = 1 + Mathf.Round(Random.Range(-0.1f, 0.1f) * 100.0f) / 100.0f;

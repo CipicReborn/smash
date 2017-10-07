@@ -26,7 +26,7 @@ public class Goal : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Ball")) {
-            m_gameSequencer.EndPoint(m_scoringPlayer, m_defendingPlayer);
+            StartCoroutine(m_gameSequencer.EndPoint(m_scoringPlayer, m_defendingPlayer));
         }
     }
 }

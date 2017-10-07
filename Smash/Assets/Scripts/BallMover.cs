@@ -7,20 +7,23 @@ public class BallMover : MonoBehaviour {
 
     public ReboundParticlesController particles;
 
-    public void InitPosition() {
+    public void Init() {
         transform.position = m_initialPosition;
         GetComponentInChildren<LineRendererController>().Reset();
+        m_smashTrail.SetActive(false);
     }
 
     public void SetVelocity (Vector3 velocity) {
         m_velocity = velocity;
         m_useSmashVelocity = false;
+        m_smashTrail.SetActive(false);
         //Debug.Log("Ball Velocity set to " + m_velocity.ToString());
     }
 
     public void SetSmashVelocity (Vector3 velocity) {
         m_smashVelocity = velocity;
         m_useSmashVelocity = true;
+        m_smashTrail.SetActive(true);
         //Debug.Log("Ball Velocity set to " + m_velocity.ToString());
     }
 
@@ -36,12 +39,14 @@ public class BallMover : MonoBehaviour {
     Vector3 m_velocity = Vector3.zero;
     Vector3 m_smashVelocity = Vector3.zero;
     bool m_useSmashVelocity = false;
+    GameObject m_smashTrail;
 
     void Awake() {
         m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         m_sfxPlayer = GetComponent<AudioSource>();
         m_hitWall = Resources.Load("hitwall") as AudioClip;
         m_initialPosition = transform.position;
+        m_smashTrail = transform.Find("SmashTrail").gameObject;
     }
 
     void Update () {
