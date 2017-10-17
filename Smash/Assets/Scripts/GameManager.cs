@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour {
 
     public Dictionary<PlayerIds, Player> Players { get { return m_players; } }
 
+    public float TouchAreaWidthInPixels { get { return m_targetTouchAreaWidthInPixels; } }
+
 
 
     #endregion
@@ -121,8 +123,14 @@ public class GameManager : MonoBehaviour {
     float m_lowerBound = 0;
     float m_leftBound = 0;
     float m_rightBound = 0;
-    float m_touchAreaWidth;
+    float m_touchAreaWidth = 0;
 
+    const float m_INCH_2_CM = 2.54f;
+    float m_targetTouchAreaWidthInPixels = 0;
+    float m_targetWidthCm = 2.0f;
+
+    Goal m_leftGoal;
+    Goal m_rightGoal;
 
     #endregion
 
@@ -134,14 +142,18 @@ public class GameManager : MonoBehaviour {
         m_uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         m_gameSequencer = GameObject.Find("GameSequencer").GetComponent<GameSequencer>();
         m_TouchManager = GameObject.Find("TouchManager").GetComponent<TouchManager>();
-        
+        m_leftGoal = GameObject.Find("Left Goal").GetComponent<Goal>();
+        m_rightGoal = GameObject.Find("Right Goal").GetComponent<Goal>();
+
         m_upperBound = Camera.main.orthographicSize;
         m_lowerBound = -m_upperBound;
         m_rightBound = (float) Screen.width / (float) Screen.height * Camera.main.orthographicSize;
         Debug.Log(Screen.width.ToString() + " / " + Screen.height.ToString() + " x " + Camera.main.orthographicSize.ToString());
         Debug.Log(m_rightBound.ToString());
         m_leftBound = -m_rightBound;
-        
+
+        DetermineTouchAreaSize();
+        SetGoalsPosition();
         //Debug.Log("[GameManager] Upper Bound (" + m_upperBound.ToString() + "), Lower Bound (" + m_lowerBound.ToString() + ")");
     }
 
@@ -179,6 +191,36 @@ public class GameManager : MonoBehaviour {
     void UpdateScoreDisplay () {
         m_uIManager.UpdateScore(m_players[PlayerIds.P1].CurrentScore, m_players[PlayerIds.P2].CurrentScore);
     }
+
+    void DetermineTouchAreaSize () {
+
+        var canvasScaler = GameObject.Find("UICanvas").GetComponent<UnityEngine.UI.CanvasScaler>();
+
+
+        m_targetTouchAreaWidthInPixels = m_targetWidthCm / m_INCH_2_CM * Screen.dpi * canvasScaler.referenceResolution.x / Screen.width;
+        m_touchAreaWidth = GetTouchAreaWidthWorldSpace();
+
+        Debug.Log("Touch Area Width Set to [" + m_targetTouchAreaWidthInPixels.ToString() + " pixels]");
+        Debug.Log("Touch Area Width Set to [" + m_touchAreaWidth.ToString() + " meters]");
+    }
+
+    float GetTouchAreaWidthWorldSpace () {
+
+        var canvasScaler = GameObject.Find("UICanvas").GetComponent<UnityEngine.UI.CanvasScaler>();
+
+
+        float pixelsPerMeter = canvasScaler.referenceResolution.y / (Camera.main.orthographicSize * 2.0f);
+        Debug.Log(Screen.width + " x " + Screen.height);
+        Debug.Log(canvasScaler.referenceResolution.x + " x " + canvasScaler.referenceResolution.y);
+        Debug.Log("pixels per meter : " + pixelsPerMeter);
+        return m_targetTouchAreaWidthInPixels / pixelsPerMeter;
+    }
+
+    void SetGoalsPosition () {
+        m_leftGoal.ResetPosition(PlayerIds.P1);
+        m_rightGoal.ResetPosition(PlayerIds.P2);
+    }
+
 
     #endregion
 }

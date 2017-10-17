@@ -3,23 +3,12 @@ using UnityEngine.UI;
 
 public class TouchAreaResizer : MonoBehaviour {
 
-    const float m_INCH_2_CM = 2.54f;
-    float m_targetWidthCm = 2.0f;
-    float m_targetWidthPixels;
-    CanvasScaler m_canvasScaler;
-
     void Start () {
-        m_canvasScaler = GetComponentInParent<CanvasScaler>();
-        m_targetWidthPixels = m_targetWidthCm / m_INCH_2_CM * Screen.dpi * m_canvasScaler.referenceResolution.x / Screen.width;
         RectTransform rt = GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(m_targetWidthPixels, rt.sizeDelta.y);
-        GameManager.Instance.TouchAreaWidth = GetWidthWorldSpace();
+        rt.sizeDelta = new Vector2(GameManager.Instance.TouchAreaWidthInPixels, rt.sizeDelta.y);
     }
 
-    float GetWidthWorldSpace () {
-        float pixelsPerMeter = Screen.height / (Camera.main.orthographicSize * 2.0f);
-        return m_targetWidthPixels / pixelsPerMeter;
-    }
+
 
 
     //private void OnGUI() {
