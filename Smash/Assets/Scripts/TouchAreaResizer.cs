@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class TouchAreaResizer : MonoBehaviour {
@@ -15,7 +13,14 @@ public class TouchAreaResizer : MonoBehaviour {
         m_targetWidthPixels = m_targetWidthCm / m_INCH_2_CM * Screen.dpi * m_canvasScaler.referenceResolution.x / Screen.width;
         RectTransform rt = GetComponent<RectTransform>();
         rt.sizeDelta = new Vector2(m_targetWidthPixels, rt.sizeDelta.y);
+        GameManager.Instance.TouchAreaWidth = GetWidthWorldSpace();
     }
+
+    float GetWidthWorldSpace () {
+        float pixelsPerMeter = Screen.height / (Camera.main.orthographicSize * 2.0f);
+        return m_targetWidthPixels / pixelsPerMeter;
+    }
+
 
     //private void OnGUI() {
     //    GUI.Label(new Rect(25, 25, 200, 30), "ScreenWidth:" + Screen.width);

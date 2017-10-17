@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
+    public static GameManager Instance {
+        get { return instance; }
+    }
+    private static GameManager instance;
+
     #region PUBLIC MEMBERS
 
     public float InitialBallSpeed;
@@ -18,94 +23,51 @@ public class GameManager : MonoBehaviour {
     #region PUBLIC PROPERTIES
 
     internal GameTypes GameType {
-        get {
-            return m_gameType;
-        }
-
-        set {
-            m_gameType = value;
-        }
+        get { return m_gameType; }
+        set { m_gameType = value; }
     }
 
     internal SoloModes SoloMode {
-        get {
-            return m_soloMode;
-        }
-
-        set {
-            m_soloMode = value;
-        }
+        get { return m_soloMode; }
+        set { m_soloMode = value; }
     }
 
     internal AIs AI {
-        get {
-            return m_AI;
-        }
-
-        set {
-            m_AI = value;
-        }
+        get { return m_AI; }
+        set { m_AI = value; }
     }
 
     public int RoundsCount {
-        get {
-            return m_roundsCount;
-        }
-
-        set {
-            m_roundsCount = value;
-        }
+        get { return m_roundsCount; }
+        set { m_roundsCount = value; }
     }
 
     public int RoundsLength {
-        get {
-            return m_roundsLength;
-        }
-
-        set {
-            m_roundsLength = value;
-        }
+        get { return m_roundsLength; }
+        set { m_roundsLength = value; }
     }
 
     public string CareerName {
-        get {
-            return m_careerName;
-        }
-
-        set {
-            m_careerName = value;
-        }
+        get { return m_careerName; }
+        set { m_careerName = value; }
     }
 
-    public float UpperBound {
-        get {
-            return m_upperBound;
-        }
+    public float UpperBound { get { return m_upperBound; } }
+    public float LowerBound { get { return m_lowerBound; } }
+    public float LeftBound { get { return m_leftBound; } }
+    public float RightBound { get { return m_rightBound; } }
+
+    public float TouchAreaWidth {
+        get { return m_touchAreaWidth; }
+        set { m_touchAreaWidth = value; }
     }
 
-    public float LowerBound {
-        get {
-            return m_lowerBound;
-        }
-    }
+    public PlayerTypes P1Type { get { return m_p1Type; } }
+    public PlayerTypes P2Type { get { return m_p2Type; } }
 
-    public PlayerTypes P1Type {
-        get {
-            return m_p1Type;
-        }
-    }
+    public Dictionary<PlayerIds, Player> Players { get { return m_players; } }
 
-    public PlayerTypes P2Type {
-        get {
-            return m_p2Type;
-        }
-    }
 
-    public Dictionary<PlayerIds, Player> Players {
-        get {
-            return m_players;
-        }
-    }
 
     #endregion
 
@@ -157,7 +119,9 @@ public class GameManager : MonoBehaviour {
 
     float m_upperBound = 0;
     float m_lowerBound = 0;
-
+    float m_leftBound = 0;
+    float m_rightBound = 0;
+    float m_touchAreaWidth;
 
 
     #endregion
@@ -166,12 +130,18 @@ public class GameManager : MonoBehaviour {
     #region PRIVATE METHODS
 
     void Awake() {
+        instance = this;
         m_uIManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         m_gameSequencer = GameObject.Find("GameSequencer").GetComponent<GameSequencer>();
         m_TouchManager = GameObject.Find("TouchManager").GetComponent<TouchManager>();
         
         m_upperBound = Camera.main.orthographicSize;
         m_lowerBound = -m_upperBound;
+        m_rightBound = (float) Screen.width / (float) Screen.height * Camera.main.orthographicSize;
+        Debug.Log(Screen.width.ToString() + " / " + Screen.height.ToString() + " x " + Camera.main.orthographicSize.ToString());
+        Debug.Log(m_rightBound.ToString());
+        m_leftBound = -m_rightBound;
+        
         //Debug.Log("[GameManager] Upper Bound (" + m_upperBound.ToString() + "), Lower Bound (" + m_lowerBound.ToString() + ")");
     }
 

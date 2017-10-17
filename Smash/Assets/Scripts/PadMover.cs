@@ -18,7 +18,10 @@ public class PadMover : MonoBehaviour {
     float zPosition;
 
     void Start () {
-        xPosition = transform.position.x;
+        xPosition = GameManager.Instance.RightBound - GameManager.Instance.TouchAreaWidth - 0.5f - (transform.lossyScale.x * 0.5f);
+        if (m_controller.GetPlayer() == PlayerIds.P1) {
+            xPosition *= -1;
+        }
         zPosition = transform.position.z;
 	}
 	
